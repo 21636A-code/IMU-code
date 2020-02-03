@@ -26,6 +26,8 @@ def autonomous():
     wheelR = 2 #inches
     Kp = 1 #proportional pid value
     Kf = 0 #feed forward value
+    turnVelocity = 10 # the velocity, in perentage to be used on each motor when turning
+    driveVelocity = 20 # the velocity, in percentage to be used on each motor when turning
 
     #below: variables not to change
     wheelD = wheelR * 2
@@ -68,9 +70,16 @@ def autonomous():
         ticks = rotations*360
         return ticks
     def moveInches(inches):
-            
-    def turnDegrees(degrees):
-        
+        global driveVelocity
+        drivetrain.drive_for(vex.DirectionType.FWD, inches, vex.DistanceUnits.IN, driveVelocity, vex.VelocityUnits.PCT, True) #move x inches at a velocity of 20% speed
+    def turnRight(degrees):
+        global turnVelocity
+        drivetrain.set_velocity(turnVelocity, vex.VelocityUnits.PCT)
+        drivetrain.turn_for(vex.TurnType.RIGHT, degrees, vex.RotationUnits.DEG, turnVelocity, vex.VelocityUnits.PCT, True)
+    def turnLeft(degrees):
+        global turnVelocity
+        drivetrain.set_velocity(turnVelocity, vex.VelocityUnits.PCT)
+        drivetrain.turn_for(vex.TurnType.LEFT, degrees, vex.RotationUnits.DEG, turnVelocity, vex.VelocityUnits.PCT, True)
 def drivercontrol():
     # Place drive control code here, inside the loop
     while True:
