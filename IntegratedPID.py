@@ -38,16 +38,6 @@ def autonomous():
         #TODO: get encoder command
         return 0 # return the encoder RPM
     def setPWR(leftPower, rightPower):
-        #set the power to a value from -1 to 1
-        if pwr > 1:
-            pwr = 1
-        elif pwr < -1:
-            pwr = -1
-<<<<<<< HEAD
-=======
-        #TODO: set power command
->>>>>>> master
-        drivetrain.set_velocity(20, vex.VelocityUnits.PCT)
         leftMotor1.spin(vex.DirectionType.FWD, leftPower, vex.VelocityUnits.PCT)
         rightMotor1.spin(vex.DirectionType.FWD, rightPower, vex.VelocityUnits.PCT)
     def inchesToFeet(inches):
