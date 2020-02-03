@@ -44,6 +44,10 @@ def autonomous():
         return 0
     def resetEncoder():
         return
+    def resetGyro():
+        return
+    def getGyroDegrees():
+        return 0
     def setPWR(leftPower, rightPower):
         global driveVelocity
         drivetrain.set_velocity(driveVelocity, vex.VelocityUnits.PCT)
@@ -72,37 +76,37 @@ def autonomous():
     def rotationsToTicks(rotations):
         ticks = rotations*360
         return ticks
+    def inchesToRotations(inches):
+        global wheelC
+        rotations = inches/wheelC
     def moveInches(inches, timeOut):
         resetEncoder()
         global driveVelocity
         global Kp
         global Kf
+        inches = rotationsToTicks(inchesToRotations(inches))
         while timer < timeOut:
             Ke = inches - getTicks()
             pwr = Kp*Ke+Kf
             setPWR(pwr, pwr)
-        
     def turnRight(degrees, timeOut):
         resetEncoder()
         global turnVelocity
         global Kp
         global Kf
         while timer < timeOut:
-            Ke = inches - getTicks()
+            Ke = inches - getGyroDegrees()
             pwr = Kp*Ke+Kf
             setPWR(pwr, -pwr)
-        
-        drivetrain.turn_for(vex.TurnType.RIGHT, degrees, vex.RotationUnits.DEG, turnVelocity, vex.VelocityUnits.PCT, True)
     def turnLeft(degrees):
         resetEncoder()
         global turnVelocity
         global Kp
         global Kf
         while timer < timeOut:
-            Ke = inches - getTicks()
+            Ke = inches - getGyroDegrees()
             pwr = Kp*Ke+Kf
             setPWR(-pwr, pwr)
-        
 def drivercontrol():
     # Place drive control code here, inside the loop
     while True:
