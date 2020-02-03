@@ -22,47 +22,10 @@ def pre_auton():
 def autonomous():
     # Place autonomous code here
     
-    #below: variables to change
-    wheelR = 2 #inches
-    Kp = 1 #proportional pid value
-    Kf = 0 #feed forward value
     turnVelocity = 10 # the velocity, in perentage to be used on each motor when turning
     driveVelocity = 20 # the velocity, in percentage to be used on each motor when turning
-
-    #below: variables not to change
-    wheelD = wheelR * 2
-    wheelC = math.pi*wheelD
     
     #below: self explanitory functions
-    def getvelocity():
-        #TODO: get encoder command
-        return 0 # return the encoder RPM
-    def setPWR(leftPower, rightPower):
-        leftMotor1.spin(vex.DirectionType.FWD, leftPower, vex.VelocityUnits.PCT)
-        rightMotor1.spin(vex.DirectionType.FWD, rightPower, vex.VelocityUnits.PCT)
-    def inchesToFeet(inches):
-        return inches/12
-    def feetToInches(feet):
-        return feet*12
-    def rpmToIPS(rpm):
-        rps = rpm * 60 #one RPM unit is equivalent to 60 rps units
-        IPS = rps*wheelC
-        return IPS
-    def rpmToFPS(rpm):
-        FPS = inchesToFeet(rpmToIPS(rpm))
-        return FPS
-    def pidRPM(targetRPM):
-        global Kp
-        global Kf
-        while True:
-            error = getvelocity()-targetRPM
-            setPWR(Kp*error)
-    def ticksTorotation(ticks):
-        rotations = ticks/360
-        return rotations
-    def rotationsToTicks(rotations):
-        ticks = rotations*360
-        return ticks
     def moveInches(inches):
         global driveVelocity
         drivetrain.drive_for(vex.DirectionType.FWD, inches, vex.DistanceUnits.IN, driveVelocity, vex.VelocityUnits.PCT, True) #move x inches at a velocity of 20% speed
