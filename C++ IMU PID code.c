@@ -31,7 +31,7 @@ Brain.Screen.clearScreen(); Brain.Screen.setFont(fontType::mono40); Brain.Screen
 }
 //Haven’t tested yet but should work
 //Basically if you try to turn to 450 degrees it will make sure you turn to 90 and not in a circle to get there
-void turnToHeading(double target, int intakeSpeed = 0, int timeout = 15)
+void turnToHeading(double target, int intakeSpeed = 0, int timeout = 15) 
 {
 double rotation = Inertial.rotation(rotationUnits::deg); while(rotation >= 360)
 {
