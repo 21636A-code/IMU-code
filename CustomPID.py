@@ -3,6 +3,7 @@ import sys
 import vex
 from vex import *
 import math
+from time import perf_counter
 
 # Creates a competition object that allows access to Competition methods.
 competition = vex.Competition()
@@ -49,8 +50,7 @@ def autonomous():
     def getGyroDegrees():
         return 0
     def setPWR(leftPower, rightPower):
-        global driveVelocity
-        drivetrain.set_velocity(driveVelocity, vex.VelocityUnits.PCT)
+        #drivetrain.set_velocity(driveVelocity, vex.VelocityUnits.PCT)
         leftMotor1.spin(vex.DirectionType.FWD, leftPower, vex.VelocityUnits.PCT)
         rightMotor1.spin(vex.DirectionType.FWD, rightPower, vex.VelocityUnits.PCT)
     def inchesToFeet(inches):
@@ -65,11 +65,9 @@ def autonomous():
         FPS = inchesToFeet(rpmToIPS(rpm))
         return FPS
     def pidRPM(targetRPM):
-        global Kp
-        global Kf
         while True:
-            error = getvelocity()-targetRPM
-            setPWR(Kp*error)
+            error = getvelocity() - targetRPM
+            setPWR(Kp*error, Kp*error)
     def ticksTorotation(ticks):
         rotations = ticks/360
         return rotations
@@ -77,36 +75,35 @@ def autonomous():
         ticks = rotations*360
         return ticks
     def inchesToRotations(inches):
-        global wheelC
         rotations = inches/wheelC
     def moveInches(inches, timeOut):
+        baseTime = perf_counter()
         resetEncoder()
-        global driveVelocity
-        global Kp
-        global Kf
         inches = rotationsToTicks(inchesToRotations(inches))
+        timer = perf_counter() - baseTime
         while timer < timeOut:
             Ke = inches - getTicks()
             pwr = Kp*Ke+Kf
             setPWR(pwr, pwr)
+            timer = perf_counter() - baseTime
     def turnRight(degrees, timeOut):
+        baseTime = perf_counter()
         resetEncoder()
-        global turnVelocity
-        global Kp
-        global Kf
+        timer = perf_counter() - baseTime
         while timer < timeOut:
-            Ke = inches - getGyroDegrees()
+            Ke = degrees - getGyroDegrees()
             pwr = Kp*Ke+Kf
             setPWR(pwr, -pwr)
-    def turnLeft(degrees):
+            timer = perf_counter() - baseTime
+    def turnLeft(degrees, timeOut):
+        baseTime = perf_counter()
         resetEncoder()
-        global turnVelocity
-        global Kp
-        global Kf
+        timer = perf_counter() - baseTime
         while timer < timeOut:
-            Ke = inches - getGyroDegrees()
+            Ke = degrees - getGyroDegrees()
             pwr = Kp*Ke+Kf
             setPWR(-pwr, pwr)
+            timer = perf_counter() - baseTime
 def drivercontrol():
     # Place drive control code here, inside the loop
     while True:
