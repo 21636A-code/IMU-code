@@ -47,7 +47,7 @@ void turnTo(double degrees, int intakeSpeed = 0, int timeout = 15)
         motionless+=0;
       vex::task::sleep(15);
     }
-    goto end; 
+    goto end;
   }
   else
   {
